@@ -1,47 +1,49 @@
-//
-//  Congrats.swift
-//  isMail
-//
-//  Created by Rizky Alpariji on 20/04/26.
-//
-
 import SwiftUI
 
 struct Congrats: View {
+    @Binding var selectedTab : MailTab
+    @Binding var showCompose : Bool
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ZStack {
-            Image("bg-2")
-                .resizable()
-                .ignoresSafeArea()
-                .aspectRatio(contentMode: .fill)
-                .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.clear, .black.opacity(0.5)]),
-                            startPoint: .top,
-                            endPoint: .top
-                        )
-                )
+            Color.black.ignoresSafeArea()
+            
+            VStack(spacing: 24) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 80))
+                    .foregroundColor(.green)
                 
-            VStack{
-                Text("Congrats!")
-                    .font(.system(size: 72, weight: .black))
-                    .foregroundStyle(.white)
+                Text("Capsule Locked!")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.white)
                 
-                Text("You successfully sent a mail to your future self")
-                    .font(.custom("CormorantGaramond-Regular", size: 16))
-                    .foregroundStyle(.white)
-                    .padding(.bottom)
+                Text("Your message has been sent to the future.")
+                    .font(.body)
+                    .foregroundColor(.gray)
                 
-                
-                NavigationLink(destination: MailHomeView()) {
-                    Text("Continue")
+                Button {
+                    selectedTab = .sent
+                    showCompose = false
+                } label: {
+                    Text("Back to Home")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.black)
+                        .frame(width: 200, height: 50)
+                        .background(Color.white)
+                        .cornerRadius(25)
                 }
-                .buttonStyle(.glassProminent)
-            }.frame(maxWidth: .infinity)
+                .padding(.top, 40)
+            }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
+
 #Preview {
-    Congrats()
+    Congrats(
+        selectedTab: .constant(.sent),
+        showCompose: .constant(true)
+    )
 }

@@ -1,60 +1,67 @@
 //
-//  Congrats.swift
+//  InboxDetail.swift
 //  isMail
 //
 //  Created by Rizky Alpariji on 20/04/26.
 //
 
+
+
 import SwiftUI
 
 struct InboxDetail: View {
+    let mail: Mail
+    
     var body: some View {
-        ZStack {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 8) {
+                    
+                    Text(mail.title)
+                        .font(.system(size: 42, weight: .bold))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(.top, 16)
+                
+                Divider()
+                    .background(Color.white.opacity(0.3))
+                
+                Text(mail.message)
+                    .font(.system(size: 18, weight: .regular))
+                    .foregroundColor(.white.opacity(0.9))
+                    .lineSpacing(8)
+                
+                Spacer(minLength: 80)
+            }
+            .padding(.horizontal, 24)
+        }
+        .background {
             Image("bg-3")
                 .resizable()
-                .ignoresSafeArea()
                 .aspectRatio(contentMode: .fill)
                 .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.clear, .black.opacity(0.5)]),
-                            startPoint: .top,
-                            endPoint: .top
-                        )
+                    LinearGradient(
+                        gradient: Gradient(colors: [.black.opacity(0.8), .clear, .black.opacity(0.9)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 )
-                
-            VStack(alignment: .leading){
-                Text("Happy Birthday Ni'mah!")
-                    .font(.system(size: 45, weight: .bold))
-                
-                HStack(spacing: 6) {
-                    Image(systemName: "paperplane.fill")
-                        .font(.caption)
-                    
-                    Text("Sent on 04 Mar 2026")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color.blue, in: Capsule())
-                .foregroundColor(.white)
-                    
-                Image("image-1")
-                    .resizable()
-                    .frame(width: 350, height: 300)
-                    .padding()
-                
-                Text("Hi Ni'mah, happy birthday!")
-                    .frame(width: 350)
-                    .padding()
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
-                    
-                    
-            }.frame(maxWidth: .infinity)
+                .ignoresSafeArea()
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }
 
 #Preview {
-    InboxDetail()
+    InboxDetail(
+        mail: Mail(
+            unlockDate: Date(),
+            sentDate: Calendar.current.date(byAdding: .year, value: -1, to: Date()) ?? Date(),
+            message: "Hi Ni'mah, happy birthday! This is a dynamic message injected from the Mail object. Notice how the layout perfectly adapts to longer texts because we implemented a ScrollView and dynamic typographies. Stay awesome and keep learning those basic first principles!",
+            title: "Happy Birthday Ni'mah!",
+            isLocked: false
+        )
+    )
 }

@@ -4,6 +4,8 @@ struct BottomBarView: View {
     @Binding var selectedTab: MailTab
     @State private var isShowingComposerSheet = false
 
+    var onAddTapped: () -> Void
+    
     var body: some View {
         HStack {
             // Tab Segmented Control
@@ -28,7 +30,7 @@ struct BottomBarView: View {
                     )
                 }
             }
-            .padding(4) // Kurangi padding luar biar nggak terlalu tebal
+            .padding(4)
             .background(
                 Capsule()
                     .fill(Color.black.opacity(0.45))
@@ -40,34 +42,33 @@ struct BottomBarView: View {
 
             Spacer()
 
-            // Main Action Button (FAB)
+            
             Button(action: {
-                isShowingComposerSheet = true
+                onAddTapped()
             }) {
                 Image(systemName: "plus")
-                    .font(.system(size: 24, weight: .medium)) // Kecilin ikon
+                    .font(.system(size: 24, weight: .medium))
                     .foregroundColor(.white)
-                    .frame(width: 60, height: 60) // Standar FAB iOS
+                    .frame(width: 60, height: 60)
                     .background(Color.blue)
                     .clipShape(Circle())
-                    // Tambahin sedikit shadow biar dia pop-up (opsional, tapi bagus buat UI)
                     .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
             }
         }
-        .padding(.horizontal, 16) // Kasih jarak aman dari tepi layar
+    
     }
 
     @ViewBuilder
     func tabItem(icon: String, title: String, isActive: Bool) -> some View {
         VStack(spacing: 4) {
             Image(systemName: icon)
-                .font(.system(size: 20, weight: .medium)) // Kecilin ikon
+                .font(.system(size: 20, weight: .medium))
 
             Text(title)
-                .font(.system(size: 12, weight: .semibold)) // Kecilin teks
+                .font(.system(size: 12, weight: .semibold))
         }
         .foregroundColor(isActive ? .blue : .white)
-        .frame(width: 80, height: 52) // Proporsi yang jauh lebih rapi
+        .frame(width: 80, height: 52)
         .background(isActive ? Color.white.opacity(0.05) : Color.clear)
         .clipShape(Capsule())
     }
